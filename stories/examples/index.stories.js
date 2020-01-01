@@ -6,29 +6,32 @@ import { withKnobs, text, boolean } from '@storybook/addon-knobs'
 import BaseButton from '../../components/button/BaseButton.vue'
 import TypescriptButton from '../../components/button/TypescriptButton.vue'
 
-storiesOf('Examples/Base usage', module)
-  .addDecorator(withKnobs)
-  .add(
-    'Simple example',
-    () => ({
-      components: { LocalButton: BaseButton },
-      props: {
-        disabled: {
-          default: boolean('disabled', false),
-        },
-        label: {
-          default: text('label', 'test label'),
-        },
-      },
-      template:
-        '<local-button :disabled="disabled" :label="label" @click="action"/>',
-      methods: { action: action('clicked') },
-    }),
-    {
-      info: {},
-      notes: 'A very simple example of addon notes',
+const localButton = () => ({
+  components: { LocalButton: BaseButton },
+  props: {
+    disabled: {
+      default: boolean('disabled', false),
     },
-  )
+    label: {
+      default: text('label', 'test label'),
+    },
+  },
+  template:
+    '<local-button :disabled="disabled" :label="label" @click="action"/>',
+  methods: { action: action('clicked') },
+})
+
+localButton.story = {
+  parameters: {
+    jest: ['button.spec.ts'],
+  },
+}
+
+storiesOf('Examples/Base usage', module)
+  .add('Simple example', localButton, {
+    info: {},
+    notes: 'A very simple example of addon notes',
+  })
   .add(
     'Show summary',
     () => ({
