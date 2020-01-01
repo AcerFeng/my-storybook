@@ -26,6 +26,7 @@ storiesOf('Examples/Base usage', module)
     }),
     {
       info: {},
+      notes: 'A very simple example of addon notes',
     },
   )
   .add(
