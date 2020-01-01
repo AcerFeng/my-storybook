@@ -1,16 +1,28 @@
 import { storiesOf } from '@storybook/vue'
 import { action } from '@storybook/addon-actions'
 import { linkTo } from '@storybook/addon-links'
+import { withKnobs, text, boolean } from '@storybook/addon-knobs'
 
 import BaseButton from '../../components/button/BaseButton.vue'
 import TypescriptButton from '../../components/button/TypescriptButton.vue'
 
 storiesOf('Examples/Base usage', module)
+  .addDecorator(withKnobs)
   .add(
     'Simple example',
     () => ({
       components: { LocalButton: BaseButton },
-      template: '<local-button label="haha!"/>',
+      props: {
+        disabled: {
+          default: boolean('disabled', false),
+        },
+        label: {
+          default: text('label', 'test label'),
+        },
+      },
+      template:
+        '<local-button :disabled="disabled" :label="label" @click="action"/>',
+      methods: { action: action('clicked') },
     }),
     {
       info: {},
