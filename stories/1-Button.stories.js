@@ -66,3 +66,10 @@ export const typescriptButton = () => ({
   template: `<TypescriptButton @click="action">TypescriptButton</TypescriptButton>`,
   methods: { action: linkTo('Button|baseButton') },
 })
+
+typescriptButton.story = {
+  parameters: {
+    notes: 'test notes',
+    info: {},
+  },
+}
