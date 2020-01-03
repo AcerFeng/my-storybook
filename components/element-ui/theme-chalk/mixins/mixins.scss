@@ -1,0 +1,28 @@
+@import 'function.scss';
+
+@mixin when($state) {
+  /*
+    @at-root 将该样式输出在文档的根层级上而不内嵌
+    
+    .parent {
+      ...
+      @at-root {
+        .child1 { ... }
+        .child2 { ... }
+      }
+      .step-child { ... }
+    }
+
+    output:
+
+    .parent { ... }
+    .child1 { ... }
+    .child2 { ... }
+    .parent .step-child { ... }
+  */
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}

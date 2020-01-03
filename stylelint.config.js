@@ -2,7 +2,21 @@ module.exports = {
   // add your custom config here
   // https://stylelint.io/user-guide/configuration
   rules: {
-    'at-rule-no-unknown': true,
+    'at-rule-no-unknown': [
+      true,
+      {
+        ignoreAtRules: [
+          'function',
+          'if',
+          'else',
+          'each',
+          'include',
+          'mixin',
+          'return',
+          'at-root',
+        ],
+      },
+    ],
     'block-no-empty': true,
     'color-no-invalid-hex': true,
     'comment-no-empty': true,

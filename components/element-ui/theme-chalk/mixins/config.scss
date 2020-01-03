@@ -1,0 +1,16 @@
+/**
+  * BEM:el-block__element--modifier
+  <ul class="menu">
+    <li class="menu__item menu__item--selected">Menu Item 1</li>
+    <li class="menu__item">Menu Item 2</li>
+    <li class="menu__item">Menu Item 3</li>
+  </ul>
+  el-card is-always-shadow|is-hover-shadow|is-never-shadow
+    el-card__header
+    el-card__body
+  el-button el-button--primary
+*/
+$namespace: 'el';
+$element-separator: '__';
+$modifier-separator: '--';
+$state-prefix: 'is-';

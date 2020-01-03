@@ -1,0 +1,49 @@
+@import 'config';
+
+/* BEM support Func */
+@function selectorToString($selector) {
+  $selector: inspect($selector);
+  // 返回从索引$ start-at开始到索引$ end-at（包括两端）的$ string切片。
+  $selector: str-slice($selector, 2, -2);
+  @return $selector;
+}
+
+// 是否包含修饰
+@function containsModifier($selector) {
+  $selector: selectorToString($selector);
+
+  /*
+    返回$ substring在$ string中的第一个索引，如果$ string不包含$ substring，则返回null。
+  */
+  @if str-index($selector, $modifier-separator) {
+    @return true;
+  } @else {
+    @return false;
+  }
+}
+
+// 是否包含状态 .is-xxxx
+@function containWhenFlag($selector) {
+  $selector: selectorToString($selector);
+
+  @if str-index($selector, '.' + $state-prefix) {
+    @return true;
+  } @else {
+    @return false;
+  }
+}
+
+@function containPseudoClass($selector) {
+  $selector: selectorToString($selector);
+
+  @if str-index($selector, ':') {
+    @return true;
+  } @else {
+    @return false;
+  }
+}
+// 是否命中以上其中之一的规则
+@function hitAllSpecialNestRule($selector) {
+  @return containsModifier($selector) or containWhenFlag($selector) or
+    containPseudoClass($selector);
+}
