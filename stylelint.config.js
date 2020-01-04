@@ -9,6 +9,7 @@ module.exports = {
           'function',
           'if',
           'else',
+          'for',
           'each',
           'include',
           'mixin',

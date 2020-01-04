@@ -1,9 +1,90 @@
 @import 'function.scss';
+@import '../common/var.scss';
+
+/* Break-points */
+@mixin res($key, $map: $--breakpoints) {
+  @if map-has-key($map, $key) {
+    // 添加响应式
+    // $key: xs = @media only screen and (max-width: 768px - 1)
+    @media only screen and #{inspect(map-get($map, $key))} {
+      @content;
+    }
+  } @else {
+    @warn 'Undefeined points: `#{$map}`';
+  }
+}
+
+/**
+  BEM: 块（Block）、元素（Element）、修饰符（Modifier） css命名规则
+*/
+
+/** 块（Block） */
+@mixin b($block) {
+  $B: $namespace + '-' + $block;
+
+  .#{$B} {
+    @content;
+  }
+}
+
+@mixin e($element) {
+  $E: $element !global;
+  $selector: &;
+  $currentSelector: '';
+
+  @each $unit in $element {
+    $currentSelector: #{$currentSelector +
+      '.' +
+      $B +
+      $element-separator +
+      $unit +
+      ','};
+  }
+
+  @if hitAllSpecialNestRule($selector) {
+    @at-root {
+      #{$selector} {
+        #{$currentSelector} {
+          @content;
+        }
+      }
+    }
+  } @else {
+    @at-root {
+      #{$currentSelector} {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin m($modifier) {
+  $selector: &;
+  $currentSelector: '';
+
+  @each $unit in $modifier {
+    /*
+      如果父级为el-button $modifier为primary
+      则相当于：'' + el-button + '--' + primary + ','
+    */
+    $currentSelector: #{$currentSelector +
+      & +
+      $modifier-separator +
+      $unit +
+      ','};
+  }
+
+  @at-root {
+    #{$currentSelector} {
+      @content;
+    }
+  }
+}
 
 @mixin when($state) {
   /*
     @at-root 将该样式输出在文档的根层级上而不内嵌
-    
+
     .parent {
       ...
       @at-root {
