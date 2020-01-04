@@ -68,19 +68,108 @@ export default class ElButton extends Vue {
 @import '../theme-chalk/common/var.scss';
 @import '../theme-chalk/mixins/mixins.scss';
 
-/**
-  BEM: 块（Block）、元素（Element）、修饰符（Modifier） css命名规则
-
-*/
-
-$namespace: 'el';
-
 /** 能否选中文本 */
 @mixin utils-user-select($value) {
   user-select: $value;
   -moz-user-select: $value;
   -webkit-user-select: $value;
   -ms-user-select: $value;
+}
+
+@mixin button-plain($color) {
+  color: $color;
+  background: mix($--color-white, $color, 90%);
+  border-color: mix($--color-white, $color, 60%);
+
+  &:hover,
+  &:focus {
+    background: $color;
+    border-color: $color;
+    color: $--color-white;
+  }
+
+  &:active {
+    background: mix($--color-black, $color, $--button-active-shade-percent);
+    border-color: mix($--color-black, $color, $--button-active-shade-percent);
+    color: $--color-white;
+    outline: none;
+  }
+
+  &.is-disabled {
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+      color: mix($--color-white, $color, 40%);
+      background-color: mix($--color-white, $color, 90%);
+      border-color: mix($--color-white, $color, 80%);
+    }
+  }
+}
+
+@mixin button-variant($color, $background-color, $border-color) {
+  color: $color;
+  background-color: $background-color;
+  border-color: $border-color;
+
+  &:hover,
+  &:focus {
+    background: mix(
+      $--color-white,
+      $background-color,
+      $--button-hover-tint-percent
+    );
+    border-color: mix(
+      $--color-white,
+      $border-color,
+      $--button-hover-tint-percent
+    );
+    color: $color;
+  }
+
+  &:active {
+    background: mix(
+      $--color-black,
+      $background-color,
+      $--button-active-shade-percent
+    );
+    border-color: mix(
+      $--color-black,
+      $border-color,
+      $--button-active-shade-percent
+    );
+    color: $color;
+    outline: none;
+  }
+
+  &.is-active {
+    background: mix(
+      $--color-black,
+      $background-color,
+      $--button-active-shade-percent
+    );
+    border-color: mix(
+      $--color-black,
+      $border-color,
+      $--button-active-shade-percent
+    );
+    color: $color;
+  }
+
+  &.is-disabled {
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+      color: $--color-white;
+      background-color: mix($background-color, $--color-white);
+      border-color: mix($border-color, $--color-white);
+    }
+  }
+
+  &.is-plain {
+    @include button-plain($background-color);
+  }
 }
 
 /** 按钮大小 */
@@ -96,15 +185,6 @@ $namespace: 'el';
 
   &.is-round {
     padding: $padding-vertical $padding-horizontal;
-  }
-}
-
-/** 块（Block） */
-@mixin b($block) {
-  $B: $namespace + '-' + $block;
-
-  .#{$B} {
-    @content;
   }
 }
 
@@ -245,6 +325,138 @@ $namespace: 'el';
     &::before {
       pointer-events: none;
       content: '';
+      position: absolute;
+      left: -1px;
+      top: -1px;
+      right: -1px;
+      bottom: -1px;
+      border-radius: inherit;
+      background-color: rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  // .is-round
+  @include when(round) {
+    border-radius: 20px;
+    padding: 12px 23px;
+  }
+  // .is-circle
+  @include when(circle) {
+    border-radius: 50%;
+    padding: $--button-padding-vertical;
+  }
+  // &--primary
+  @include m(primary) {
+    @include button-variant(
+      $--button-primary-font-color,
+      $--button-primary-background-color,
+      $--button-primary-border-color
+    );
+  }
+
+  @include m(success) {
+    @include button-variant(
+      $--button-success-font-color,
+      $--button-success-background-color,
+      $--button-success-border-color
+    );
+  }
+
+  @include m(warning) {
+    @include button-variant(
+      $--button-warning-font-color,
+      $--button-warning-background-color,
+      $--button-warning-border-color
+    );
+  }
+
+  @include m(danger) {
+    @include button-variant(
+      $--button-danger-font-color,
+      $--button-danger-background-color,
+      $--button-danger-border-color
+    );
+  }
+
+  @include m(info) {
+    @include button-variant(
+      $--button-info-font-color,
+      $--button-info-background-color,
+      $--button-info-border-color
+    );
+  }
+
+  @include m(medium) {
+    @include button-size(
+      $--button-medium-padding-vertical,
+      $--button-medium-padding-horizontal,
+      $--button-medium-font-size,
+      $--button-medium-border-radius
+    );
+
+    @include when(circle) {
+      padding: $--button-medium-padding-vertical;
+    }
+  }
+
+  @include m(small) {
+    @include button-size(
+      $--button-small-padding-vertical,
+      $--button-small-padding-horizontal,
+      $--button-small-font-size,
+      $--button-small-border-radius
+    );
+
+    @include when(circle) {
+      padding: $--button-small-padding-vertical;
+    }
+  }
+
+  @include m(mini) {
+    @include button-size(
+      $--button-mini-padding-vertical,
+      $--button-mini-padding-horizontal,
+      $--button-mini-font-size,
+      $--button-mini-border-radius
+    );
+
+    @include when(circle) {
+      padding: $--button-mini-padding-vertical;
+    }
+  }
+
+  @include m(text) {
+    border-color: transparent;
+    color: $--color-primary;
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:hover,
+    &:focus {
+      color: mix(
+        $--color-white,
+        $--color-primary,
+        $--button-hover-tint-percent
+      );
+      border-color: transparent;
+      background-color: transparent;
+    }
+
+    &:active {
+      color: mix(
+        $--color-black,
+        $--color-primary,
+        $--button-active-shade-percent
+      );
+      border-color: transparent;
+      background-color: transparent;
+    }
+
+    &.is-disabled,
+    &.is-disabled:hover,
+    &.is-disabled:focus {
+      border-color: transparent;
     }
   }
 }
