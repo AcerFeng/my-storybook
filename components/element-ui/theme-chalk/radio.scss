@@ -1,0 +1,15 @@
+@import 'mixins/mixins.scss';
+@import 'mixins/utils.scss';
+@import 'mixins/button';
+@import 'common/var.scss';
+
+@include b(radio) {
+  color: $--radio-font-color;
+  font-weight: $--radio-font-weight;
+  line-height: 1;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  white-space: nowrap;
+  outline: none;
+}
