@@ -64,9 +64,10 @@ export default class ElButton extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../theme-chalk/common/var.scss';
 @import '../theme-chalk/mixins/mixins.scss';
+@import '../theme-chalk/mixins/utils.scss';
 
 /** 能否选中文本 */
 @mixin utils-user-select($value) {
@@ -457,6 +458,94 @@ export default class ElButton extends Vue {
     &.is-disabled:hover,
     &.is-disabled:focus {
       border-color: transparent;
+    }
+  }
+}
+
+@include b(button-group) {
+  @include utils-clearfix;
+
+  display: inline-block;
+  vertical-align: middle;
+
+  & > .el-button {
+    float: left;
+    position: relative;
+
+    & + .el-button {
+      margin-left: 0;
+    }
+
+    &.is-disabled {
+      z-index: 1;
+    }
+
+    &:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:first-child:last-child {
+      border-top-right-radius: $--button-border-radius;
+      border-bottom-right-radius: $--button-border-radius;
+      border-top-left-radius: $--button-border-radius;
+      border-bottom-left-radius: $--button-border-radius;
+
+      &.is-round {
+        border-radius: 20px;
+      }
+
+      &.is-circle {
+        border-radius: 50%;
+      }
+    }
+
+    &:not(:first-child):not(:last-child) {
+      border-radius: 0;
+    }
+
+    &:not(:last-child) {
+      margin-right: -1px;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      z-index: 1;
+    }
+
+    @include when(active) {
+      z-index: 1;
+    }
+  }
+
+  & > .el-dropdown {
+    & > .el-button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left-color: rgba($--color-white, 0.5);
+    }
+  }
+
+  @each $type in (primary, success, warning, danger, info) {
+    .el-button--#{$type} {
+      &:first-child {
+        border-right-color: rgba($--color-white, 0.5);
+      }
+
+      &:last-child {
+        border-left-color: rgba($--color-white, 0.5);
+      }
+
+      &:not(:first-child):not(:last-child) {
+        border-left-color: rgba($--color-white, 0.5);
+        border-right-color: rgba($--color-white, 0.5);
+      }
     }
   }
 }
